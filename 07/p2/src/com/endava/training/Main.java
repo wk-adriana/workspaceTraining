@@ -21,8 +21,8 @@ public class Main {
                     stringStack.push(word);
                 }
                 while (stringStack.size() != 0) {
-                    bufferedWriter.write(stringStack.pop());
-                    bufferedWriter.write(" ");
+                    bufferedWriter.append(stringStack.pop());
+                    bufferedWriter.append(" ");
                 }
                 bufferedWriter.newLine();
             }

@@ -5,26 +5,21 @@ import java.io.*;
 public class Main {
 
     public static void main(String[] args) {
-        File file = new File("text.txt");
-        int contor = 0;
+        int counter = 0;
         char charToFind = 'a';
-        BufferedReader bufferedReader;
-        try {
-            bufferedReader = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                char[] chars = line.toCharArray();
-                for (int i = 0; i < chars.length; i++) {
-                    if (chars[i] == charToFind) {
-                        contor++;
-                    }
+        int fileChar;
+
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile("text.txt", "r")) {
+            randomAccessFile.seek(12);
+            while ((fileChar = randomAccessFile.read()) != -1) {
+                if ( (char)fileChar == charToFind) {
+                    counter++;
                 }
             }
-            bufferedReader.close();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
 
-        System.out.println(contor + " occurences found for the character " + charToFind);
+        System.out.println(counter + " occurences found for the character " + charToFind);
     }
 }

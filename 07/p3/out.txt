@@ -290,6 +290,7 @@ D:\
           Shape2D.java
    05\
     Training05\
+     .gitignore
      .idea\
       compiler.xml
       copyright\
