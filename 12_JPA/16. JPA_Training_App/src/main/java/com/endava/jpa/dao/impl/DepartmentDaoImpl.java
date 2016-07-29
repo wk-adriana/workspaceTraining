@@ -36,8 +36,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 	}
 
 	public void remove(Department toBeRemoved) {
-		Department department = entityManager.find(Department.class, toBeRemoved.getId());
-		entityManager.merge(department);
-		entityManager.remove(department);
+		entityManager.merge(toBeRemoved);
+		entityManager.remove(toBeRemoved);
 	}
 }

@@ -7,36 +7,20 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+
+import static javafx.scene.input.KeyCode.Q;
 
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
 
+	private final String QUERY_FIND_BY_NAME = "SELECT p FROM Project p WHERE p.name = :project_name";
+
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	private final String QUERY_FIND_ALL = "SELECT p FROM Project p";
-
-	public Project find(int id) {
-		return entityManager.find(Project.class, id);
-	}
-
-	public List<Project> findAll() {
-		return entityManager.createQuery(QUERY_FIND_ALL)
-				.getResultList();
-	}
-
-	public void save(Project toBeSaved) {
-		entityManager.persist(toBeSaved);
-	}
-
-	public void update(Project toBeUpdated) {
-		entityManager.merge(toBeUpdated);
-	}
-
-	public void remove(Project toBeRemoved) {
-		Project project = entityManager.find(Project.class, toBeRemoved.getId());
-		entityManager.merge(project);
-		entityManager.remove(project);
+	public Project find(String name) {
+		return (Project) entityManager.createQuery(QUERY_FIND_BY_NAME)
+				.setParameter("project_name", name)
+				.getSingleResult();
 	}
 }

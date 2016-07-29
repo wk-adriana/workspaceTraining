@@ -1,6 +1,8 @@
 package com.endava.jpa.service.impl;
 
 import com.endava.jpa.model.Department;
+import com.endava.jpa.model.Employee;
+import com.endava.jpa.model.Project;
 import com.endava.jpa.service.DepartmentService;
 import com.endava.jpa.service.EmployeeService;
 import com.endava.jpa.service.ProjectService;
@@ -11,6 +13,9 @@ import java.util.List;
 
 @Service
 public class JPAMainService {
+
+	private static final String BUCHARTEST = "Bucuresti";
+	private static final String PROJECT_NAME_ENDAVA = "Endava";
 
 	@Autowired
 	private DepartmentService departmentService;
@@ -24,17 +29,11 @@ public class JPAMainService {
 	//-------------------------------------- Department -----------------------------/
 
 	public Department findDepartment(int id) {
-		Department department = departmentService.find(id);
-		System.out.println(department);
-		return department;
+		return departmentService.find(id);
 	}
 
-	public void  findDepartmentByName(String name) {
-		List<Department> departments = departmentService.find(name);
-		for(Department department : departments) {
-//			departments.add(department);
-			System.out.println(department);
-		}
+	public List<Department>  findDepartmentByName(String name) {
+		return departmentService.find(name);
 	}
 	/**
 	 *   Define a new department entity and insert it into the corresponding table
@@ -50,8 +49,10 @@ public class JPAMainService {
 	 */
 	public void updateDepartment(int id, String name) {
 		Department department = departmentService.find(id);
-		department.setName(name);
-		departmentService.update(department);
+		if (department != null) {
+			department.setName(name);
+			departmentService.update(department);
+		}
 	}
 
 	/**
@@ -59,21 +60,31 @@ public class JPAMainService {
 	 */
 	public void deleteDepartment(int id) {
 		Department department = departmentService.find(id);
-		departmentService.remove(department);
+		if (department != null) {
+			departmentService.remove(department);
+		}
 	}
 
 	//-------------------------------------- Employee -----------------------------/
 	/**
 	 * Create a new employee entity and save it into the corresponding table
 	 */
-	public void insertEmployee() {}
+	public void insertEmployee(String name, int salary, Department department) {
+		Employee employee = new Employee();
+		employee.setName(name);
+		employee.setSalary(salary);
+		employee.setDepartment(department);
+		employeeService.save(employee);
+	}
 
 	/**
 	 * Print to stdout all the employees from 'Bucharest', which belong to the department with id = 1.
 	 * Make sure that there are more than two employees in Bucharest which belong to the department with id=1 when populating the DB.
 	 * ! Use a join query.
 	 */
-	public void getEmployeesFromBucharest(){}
+	public  List<Employee> getEmployeesFromBucharest(Department department){
+		return employeeService.find(BUCHARTEST, department);
+	}
 
 	/**
 	 * Give a salary raise(+10%) for all employees that work in the 'Endava' project (project name = 'Endava').
@@ -87,11 +98,14 @@ public class JPAMainService {
 	/**
 	 * Add a new employee to the 'Endava' project. (project name = 'Endava')
 	 */
-	public void addEmployee(){}
+	public void addEmployee(Employee employeeToAdd){
+		Project project = projectService.find(PROJECT_NAME_ENDAVA);
+		// ???? What db relation
+	}
 
 	/**
 	 * Remove an employee from a project which has 'John Doe' as project manager.
 	 */
-	public void removeEmployee(){}
+	public void removeEmployee(Employee employeeToRemove){}
 
 }

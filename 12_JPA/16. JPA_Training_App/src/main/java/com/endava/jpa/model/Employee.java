@@ -1,9 +1,10 @@
 package com.endava.jpa.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "employee")
 public class Employee {
     @Id
     private int id;
@@ -12,6 +13,8 @@ public class Employee {
 
     private int salary;
 
+    @ManyToOne
+    @JoinColumn(name="dept_id")
     private Department department;
 
     private String street;
@@ -95,5 +98,20 @@ public class Employee {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", salary=" + salary +
+                ", department=" + department +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", birthday=" + birthday +
+                '}';
     }
 }
